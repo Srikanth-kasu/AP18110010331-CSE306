@@ -1,9 +1,6 @@
 /*
-1. Shift Reduce Parser for
-    E->E+E
-    E->E*E
-    E->(E)
-    E->d
+2. Shift Reduce Parser for
+    S –> 0S0 | 1S1 | 2
 */
 #include<stdio.h>
 #include<stdlib.h>
@@ -26,10 +23,9 @@ void display()
 }
 void main()
 {
-    printf("E->E+E\n");
-    printf("E->E*E\n");
-    printf("E->(E)\n");
-    printf("E->d\n");
+    printf("S–>0S0\n");
+    printf("S->1S1\n");
+    printf("S->2\n");
     printf("Enter the input string followed by $ \n");
     scanf("%s",input);
     ip=input;
@@ -44,7 +40,7 @@ void main()
     }
     do
     {
-        if((stack[top]=='E' && stack[top-1]=='$') && (*(ip)=='$'))
+        if((stack[top]=='S' && stack[top-1]=='$') && (*(ip)=='$'))
         {
             display();
             printf(" Valid\n\n\n");
@@ -56,40 +52,32 @@ void main()
             ip++;
             printf("Shift");
         }
-        else if(stack[top]=='d')
+        else if(stack[top]=='2')
         {
             display();
             pop();
-            push('E');
-            printf("Reduce E->d");
+            push('S');
+            printf("Reduce S->2");
         }
-        else if(stack[top]=='E' && stack[top-1]=='+' && stack[top-2]=='E'&& *ip!='*')
-        {
-            display();
-            pop();
-            pop();
-            pop();
-            push('E');
-            printf("Reduce E->E+E");
-        }
-        else if(stack[top]=='E' && stack[top-1]=='*' && stack[top-2]=='E')
-        {
-            display();
-            pop();
-            pop();
-            pop();
-            push('E');
-            printf("Reduce E->E*E");
-        }
-        else if(stack[top]==')' && stack[top-1]=='E' && stack[top-2]=='(')
+        else if(stack[top]=='0' && stack[top-1]=='S' && stack[top-2]=='0')
         {
             display();
             
             pop();
             pop();
             pop();
-            push('E');
-            printf("Reduce E->(E)");
+            push('S');
+            printf("Reduce S–>0S0");
+        }
+        else if(stack[top]=='1' && stack[top-1]=='S' && stack[top-2]=='1')
+        {
+            display();
+            
+            pop();
+            pop();
+            pop();
+            push('S');
+            printf("Reduce S–>1S1");
         }
         else if(*ip=='$')
         { 
